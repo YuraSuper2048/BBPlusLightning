@@ -1,0 +1,15 @@
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\bin\Debug\net6.0\TileBasedLightning.exe
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\bin\Debug\net6.0\TileBasedLightning.deps.json
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\bin\Debug\net6.0\TileBasedLightning.runtimeconfig.json
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\bin\Debug\net6.0\TileBasedLightning.dll
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\bin\Debug\net6.0\TileBasedLightning.pdb
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.csproj.AssemblyReference.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.AssemblyInfoInputs.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.AssemblyInfo.cs
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.csproj.CoreCompileInputs.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.dll
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\refint\TileBasedLightning.dll
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.pdb
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\TileBasedLightning.genruntimeconfig.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\TileBasedLightning\obj\Debug\net6.0\ref\TileBasedLightning.dll

@@ -1,0 +1,15 @@
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\bin\Debug\net6.0\Lightning.exe
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\bin\Debug\net6.0\Lightning.deps.json
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\bin\Debug\net6.0\Lightning.runtimeconfig.json
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\bin\Debug\net6.0\Lightning.dll
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\bin\Debug\net6.0\Lightning.pdb
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.csproj.AssemblyReference.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.AssemblyInfoInputs.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.AssemblyInfo.cs
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.csproj.CoreCompileInputs.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.dll
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\refint\Lightning.dll
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.pdb
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\Lightning.genruntimeconfig.cache
+C:\Users\YuraSuper2048\RiderProjects\Lightning\Lightning\obj\Debug\net6.0\ref\Lightning.dll
