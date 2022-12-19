@@ -38,7 +38,7 @@ public static class Lightning
 	/// <param name="falloff">Light falloff (illumination per tile)</param>
 	public static void CalculateLightning(ref Tile[,] map, int lightX, int lightY, Color color, float falloff = 0.1f)
 	{
-		if (falloff is <= 0 or > 1)
+		if (falloff is < 0 or > 1)
 			throw new ArgumentException("Value is not in acceptable range", nameof(falloff));
 
 		// Make new array with the same length as the map
