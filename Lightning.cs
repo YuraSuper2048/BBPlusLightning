@@ -103,31 +103,4 @@ public static class Lightning
 			map[ix, iy].illuminationIntensity = Math.Min(1, map[ix, iy].illuminationIntensity);
 		}
 	}
-
-	/// <summary>
-	/// Prints map to the console
-	/// </summary>
-	/// <param name="tiles">Map to print</param>
-	public static void Print(Tile[,] tiles)
-	{
-		for (var x = 0; x < tiles.GetLength(0); x++)
-		{
-			for (var y = 0; y < tiles.GetLength(1); y++)
-			{
-				if (tiles[x, y].illuminationIntensity < 0.001f)
-				{
-					Console.Write("\t");
-					continue;
-				}
-
-				Console.Write($"{tiles[x, y].illuminationIntensity:F1}\t");
-			}
-
-			Console.WriteLine();
-		}
-
-		Console.WriteLine();
-		Console.WriteLine();
-		Console.WriteLine();
-	}
 }
