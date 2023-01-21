@@ -18,7 +18,8 @@ public class Tile
 		End0 = 11,
 		End90 = 12,
 		End180 = 13,
-		End270 = 14
+		End270 = 14,
+		None = 15
 	}
 
 	public readonly Vector2Int position;
@@ -57,6 +58,7 @@ public class Tile
 		Type.End180 => new[] { Direction.Up },
 		Type.End270 => new[] { Direction.Left },
 		Type.Open => new[] { Direction.Up, Direction.Right, Direction.Down, Direction.Left },
+		Type.None => Array.Empty<Direction>(),
 		_ => throw new ArgumentOutOfRangeException()
 	};
 

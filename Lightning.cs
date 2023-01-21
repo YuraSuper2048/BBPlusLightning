@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TileBasedLightning;
 
@@ -41,15 +42,8 @@ public static class Lightning
 		if (falloff is < 0 or > 1)
 			throw new ArgumentException("Value is not in acceptable range", nameof(falloff));
 
-		// Make new array with the same length as the map
-		var tiles = new Tile[map.GetLength(0), map.GetLength(1)];
-
-		for (var x = 0; x < map.GetLength(0); x++)
-		for (var y = 0; y < map.GetLength(1); y++)
-			tiles[x, y] = new Tile(x, y, map[x, y].tileType);
-		
 		// Open tiles contain tiles for which we will need to calculate lighting
-		var openTiles = new List<Tile> { tiles[lightX, lightY] };
+		var openTiles = new List<Tile> { map[lightX, lightY] };
 		// Closed tiles contain tiles that already calculated
 		var closedTiles = new List<Tile>();
 		
@@ -60,23 +54,32 @@ public static class Lightning
 			// Calculating lightning for all openTiles
 			for (var i = 0; i < tilesCount; i++)
 			{
-				// Setting illumination for tile
-				openTiles[i].illuminationColor = color;
-				openTiles[i].illuminationIntensity = currentIlluminationIntensity;
+				// Maths
+				var oldIntensity = openTiles[i].illuminationIntensity;
+				openTiles[i].illuminationIntensity += currentIlluminationIntensity;
+				var lerpFactor = oldIntensity / openTiles[i].illuminationIntensity;
+				openTiles[i].illuminationColor = openTiles[i].illuminationColor * (1 - lerpFactor) 
+				                                 + color * lerpFactor;
+
+				openTiles[i].illuminationIntensity = Math.Min(1, openTiles[i].illuminationIntensity);
+				
 				// For each tile neighbour
 				for (var j = 0; j < Neighbours.Count; j++)
 				{
-					var neighbour = Neighbours[j];
-					var position = openTiles[i].position + neighbour;
+					var position = openTiles[i].position + Neighbours[j];
 
-					// If it is out of map, return
-					if (position.x >= tiles.GetLength(0) || position.x < 0 ||
-					    position.y >= tiles.GetLength(1) || position.y < 0) continue;
-
-					// If it is not in closed tiles and in one of available directions
+					// If it is out of map, skip
+					if (position.x >= map.GetLength(0) || position.x < 0 ||
+					    position.y >= map.GetLength(1) || position.y < 0) continue;
+					
+					// If it is not in closed tiles and in one of available directions,
+					// add it to open tiles
 					if (openTiles[i].availableDirections.Contains((Direction)j) &&
-					    !closedTiles.Contains(tiles[position.x, position.y]))
-						openTiles.Add(tiles[position.x, position.y]);
+					    !closedTiles.Contains(map[position.x, position.y]) &&
+					    !openTiles.Contains(map[position.x, position.y]))
+					{
+						openTiles.Add(map[position.x, position.y]);
+					}
 				}
 				
 				// Adding tile to closed tiles and removing it from open tiles
@@ -89,18 +92,31 @@ public static class Lightning
 			// Decrease current intensity
 			currentIlluminationIntensity -= falloff;
 		}
-		
-		// Copy all tiles to the map
-		for (var ix = 0; ix < tiles.GetLength(0); ix++)
-		for (var iy = 0; iy < tiles.GetLength(1); iy++)
+	}
+	
+	/// <summary>
+	/// Debug function: Writes map to the console
+	/// </summary>
+	private static void Print(Tile[,] tiles)
+	{
+		for (var x = 0; x < tiles.GetLength(0); x++)
 		{
-			// Some math to calculate intensity and color
-			map[ix, iy].illuminationIntensity += tiles[ix, iy].illuminationIntensity;
-			var lerpFactor = tiles[ix, iy].illuminationIntensity / map[ix, iy].illuminationIntensity;
-			map[ix, iy].illuminationColor = map[ix, iy].illuminationColor * (1 - lerpFactor) 
-			                                + tiles[ix, iy].illuminationColor * lerpFactor;
+			for (var y = 0; y < tiles.GetLength(1); y++)
+			{
+				if (tiles[x, y].illuminationIntensity < 0.001f)
+				{
+					Console.Write("\t");
+					continue;
+				}
 
-			map[ix, iy].illuminationIntensity = Math.Min(1, map[ix, iy].illuminationIntensity);
+				Console.Write($"{tiles[x, y].illuminationIntensity:F1}\t");
+			}
+
+			Console.WriteLine();
 		}
+
+		Console.WriteLine();
+		Console.WriteLine();
+		Console.WriteLine();
 	}
 }
