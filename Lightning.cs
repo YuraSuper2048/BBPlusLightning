@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 
 namespace TileBasedLightning;
 
@@ -11,9 +12,9 @@ public static class Lightning
 	[SuppressMessage("ReSharper", "ArrangeObjectCreationWhenTypeNotEvident")]
 	private static readonly List<Vector2Int> Neighbours = new()
 	{
+		new(1, 0),
 		new(-1, 0),
 		new(0, 1),
-		new(1, 0),
 		new(0, -1)
 	};
 
@@ -50,31 +51,33 @@ public static class Lightning
 		var currentIlluminationIntensity = 1f;
 		while (currentIlluminationIntensity > 0)
 		{
-			var tilesCount = openTiles.Count;
+			var currentTiles = new List<Tile>(openTiles);
+			openTiles.Clear();
 			// Calculating lightning for all openTiles
-			for (var i = 0; i < tilesCount; i++)
+			for (var i = 0; i < currentTiles.Count; i++)
 			{
 				// Maths
-				var oldIntensity = openTiles[i].illuminationIntensity;
-				openTiles[i].illuminationIntensity += currentIlluminationIntensity;
-				var lerpFactor = oldIntensity / openTiles[i].illuminationIntensity;
-				openTiles[i].illuminationColor = openTiles[i].illuminationColor * (1 - lerpFactor) 
-				                                 + color * lerpFactor;
+				var oldIntensity = currentTiles[i].illuminationIntensity;
+				currentTiles[i].illuminationIntensity += currentIlluminationIntensity;
+				var lerpFactor = oldIntensity / currentTiles[i].illuminationIntensity;
+				currentTiles[i].illuminationColor = 
+					currentTiles[i].illuminationColor *  lerpFactor
+			                                    + color * (1 - lerpFactor);
 
-				openTiles[i].illuminationIntensity = Math.Min(1, openTiles[i].illuminationIntensity);
+				currentTiles[i].illuminationIntensity = Math.Min(1, currentTiles[i].illuminationIntensity);
 				
 				// For each tile neighbour
 				for (var j = 0; j < Neighbours.Count; j++)
 				{
-					var position = openTiles[i].position + Neighbours[j];
-
+					var position = currentTiles[i].position + Neighbours[j];
+					
 					// If it is out of map, skip
 					if (position.x >= map.GetLength(0) || position.x < 0 ||
 					    position.y >= map.GetLength(1) || position.y < 0) continue;
 					
 					// If it is not in closed tiles and in one of available directions,
 					// add it to open tiles
-					if (openTiles[i].availableDirections.Contains((Direction)j) &&
+					if ((currentTiles[i].mask & (1 << j)) >> j != 1 &&
 					    !closedTiles.Contains(map[position.x, position.y]) &&
 					    !openTiles.Contains(map[position.x, position.y]))
 					{
@@ -83,10 +86,8 @@ public static class Lightning
 				}
 				
 				// Adding tile to closed tiles and removing it from open tiles
-				closedTiles.Add(openTiles[i]);
-				openTiles.Remove(openTiles[i]);
-				tilesCount--;
-				i--;
+				closedTiles.Add(currentTiles[i]);
+				openTiles.Remove(currentTiles[i]);
 			}
 
 			// Decrease current intensity
@@ -103,12 +104,6 @@ public static class Lightning
 		{
 			for (var y = 0; y < tiles.GetLength(1); y++)
 			{
-				if (tiles[x, y].illuminationIntensity < 0.001f)
-				{
-					Console.Write("\t");
-					continue;
-				}
-
 				Console.Write($"{tiles[x, y].illuminationIntensity:F1}\t");
 			}
 

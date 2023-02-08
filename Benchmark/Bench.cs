@@ -22,7 +22,7 @@ public class Bench
 
 		for (var x = 0; x < mapSize.x; x++)
 		for (var y = 0; y < mapSize.y; y++)
-			tiles[x, y] = new Tile(x, y, (Tile.Type)_random.Next(0, 14));
+			tiles[x, y] = new Tile(x, y, _random.Next(0, 15));
 	}
 
 	[Benchmark]
@@ -30,15 +30,5 @@ public class Bench
 	{
 		Lightning.CalculateLightning(ref tiles, _random.Next(0, mapSize.x), 
 												_random.Next(0, mapSize.y), Color.white);
-	}
-
-	[Benchmark]
-	public void Gen50Lights()
-	{
-		for (var i = 0; i < 50; i++)
-		{
-			Lightning.CalculateLightning(ref tiles, _random.Next(0, mapSize.x), 
-				_random.Next(0, mapSize.y), Color.white);
-		}
 	}
 }
