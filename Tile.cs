@@ -25,11 +25,6 @@ public class Tile
 		this.mask = mask;
 	}
 
-	public bool rightAvailable => (mask & (1 << 1)) >> 1 != 1;
-	public bool leftAvailable => (mask & (1 << 2)) >> 2 != 1;
-	public bool downAvailable => (mask & (1 << 3)) >> 3 != 1;
-	public bool upAvailable => (mask & (1 << 4)) >> 4 != 1;
-
 	public bool Equals(Tile other)
 	{
 		return position.Equals(other.position);

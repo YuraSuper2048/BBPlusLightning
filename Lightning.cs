@@ -12,10 +12,10 @@ public static class Lightning
 	[SuppressMessage("ReSharper", "ArrangeObjectCreationWhenTypeNotEvident")]
 	private static readonly List<Vector2Int> Neighbours = new()
 	{
+		new(0, 1),
+		new(0, -1),
 		new(1, 0),
 		new(-1, 0),
-		new(0, 1),
-		new(0, -1)
 	};
 
 	/// <summary>
@@ -24,10 +24,11 @@ public static class Lightning
 	/// <param name="map">Target map</param>
 	/// <param name="lightPos">Light position</param>
 	/// <param name="color">Light color</param>
+	/// <param name="intensity">Light intensity</param>
 	/// <param name="falloff">Light falloff (illumination per tile)</param>
-	public static void CalculateLightning(ref Tile[,] map, Vector2Int lightPos, Color color, float falloff = 0.1f)
+	public static void CalculateLightning(ref Tile[,] map, Vector2Int lightPos, Color color, float intensity = 1, float falloff = 0.1f)
 	{
-		CalculateLightning(ref map, lightPos.x, lightPos.y, color, falloff);
+		CalculateLightning(ref map, lightPos.x, lightPos.y, color, intensity, falloff);
 	}
 
 	/// <summary>
@@ -37,8 +38,9 @@ public static class Lightning
 	/// <param name="lightX">Light X</param>
 	/// <param name="lightY">Light Y</param>
 	/// <param name="color">Light color</param>
+	/// <param name="intensity">Light intensity</param>
 	/// <param name="falloff">Light falloff (illumination per tile)</param>
-	public static void CalculateLightning(ref Tile[,] map, int lightX, int lightY, Color color, float falloff = 0.1f)
+	public static void CalculateLightning(ref Tile[,] map, int lightX, int lightY, Color color, float intensity = 1, float falloff = 0.1f)
 	{
 		if (falloff is < 0 or > 1)
 			throw new ArgumentException("Value is not in acceptable range", nameof(falloff));
@@ -48,27 +50,26 @@ public static class Lightning
 		// Closed tiles contain tiles that already calculated
 		var closedTiles = new List<Tile>();
 		
-		var currentIlluminationIntensity = 1f;
+		var currentIlluminationIntensity = intensity;
 		while (currentIlluminationIntensity > 0)
 		{
+			// Copy all openTiles and loop through copy
 			var currentTiles = new List<Tile>(openTiles);
 			openTiles.Clear();
-			// Calculating lightning for all openTiles
 			for (var i = 0; i < currentTiles.Count; i++)
 			{
-				// Maths
+				// Math
 				var oldIntensity = currentTiles[i].illuminationIntensity;
 				currentTiles[i].illuminationIntensity += currentIlluminationIntensity;
 				var lerpFactor = oldIntensity / currentTiles[i].illuminationIntensity;
 				currentTiles[i].illuminationColor = 
 					currentTiles[i].illuminationColor *  lerpFactor
 			                                    + color * (1 - lerpFactor);
-
-				currentTiles[i].illuminationIntensity = Math.Min(1, currentTiles[i].illuminationIntensity);
 				
 				// For each tile neighbour
 				for (var j = 0; j < Neighbours.Count; j++)
 				{
+					// Get its position
 					var position = currentTiles[i].position + Neighbours[j];
 					
 					// If it is out of map, skip
@@ -77,20 +78,20 @@ public static class Lightning
 					
 					// If it is not in closed tiles and in one of available directions,
 					// add it to open tiles
-					if ((currentTiles[i].mask & (1 << j)) >> j != 1 &&
-					    !closedTiles.Contains(map[position.x, position.y]) &&
-					    !openTiles.Contains(map[position.x, position.y]))
+					if((currentTiles[i].mask & (1 << j)) >> j != 1 &&
+					   !closedTiles.Contains(map[position.x, position.y]) &&
+					   !openTiles.Contains(map[position.x, position.y]))
 					{
 						openTiles.Add(map[position.x, position.y]);
 					}
 				}
 				
-				// Adding tile to closed tiles and removing it from open tiles
+				// Add tile to closed tiles and remove it from open tiles
 				closedTiles.Add(currentTiles[i]);
 				openTiles.Remove(currentTiles[i]);
 			}
 
-			// Decrease current intensity
+			// Decrease current intensity 
 			currentIlluminationIntensity -= falloff;
 		}
 	}

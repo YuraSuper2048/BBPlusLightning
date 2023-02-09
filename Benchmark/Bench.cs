@@ -31,4 +31,14 @@ public class Bench
 		Lightning.CalculateLightning(ref tiles, _random.Next(0, mapSize.x), 
 												_random.Next(0, mapSize.y), Color.white);
 	}
+
+	[Benchmark]
+	public void Gen1000Lights()
+	{
+		for (int i = 0; i < 1000; i++)
+		{
+			Lightning.CalculateLightning(ref tiles, _random.Next(0, mapSize.x), 
+													_random.Next(0, mapSize.y), Color.white);
+		}
+	}
 }
